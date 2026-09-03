@@ -1,13 +1,17 @@
 import React from 'react';
 import {Image,SafeAreaView,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { PublicStackParamList } from '../../navigation/navigationTypes';
 
-export function LoginScreen() {
+type Props = NativeStackScreenProps<PublicStackParamList,'Login'>;
+
+export function LoginScreen({ navigation }: Props) {
     return (
         <SafeAreaView style={styles.container}>
       
         <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-            <TouchableOpacity style={styles.returnButton}>
+            <TouchableOpacity style={styles.returnButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="#174F79"/>
             </TouchableOpacity>
 
@@ -58,7 +62,7 @@ export function LoginScreen() {
             <View style={styles.cadastroContainer}>
                 <Text style={styles.cadastroText}>Ainda não tem uma conta?</Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
                     <Text style={styles.cadastroLink}>Criar conta</Text>
                 </TouchableOpacity>
             </View>

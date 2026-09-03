@@ -1,7 +1,11 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { PublicStackParamList } from '../../navigation/navigationTypes';
 
-export function InicioScreen() {
+type Props = NativeStackScreenProps<PublicStackParamList,'Inicio'>;
+
+export function InicioScreen({navigation }: Props) {
 
     return (
 
@@ -19,11 +23,11 @@ export function InicioScreen() {
                 
                 <View style={styles.opcoes}>
 
-                    <TouchableOpacity style={styles.buttonCadastro}>
+                    <TouchableOpacity style={styles.buttonCadastro} onPress={() => navigation.navigate('Cadastro')}>
                         <Text style={styles.buttonCadastroText}>Começar</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.buttonLogin}>
+                    <TouchableOpacity style={styles.buttonLogin} onPress={() => navigation.navigate('Login')}>
                         <Text style={styles.buttonLoginText}>Já tenho uma conta</Text>
                     </TouchableOpacity>
 

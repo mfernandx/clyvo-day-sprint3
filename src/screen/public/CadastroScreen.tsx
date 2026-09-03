@@ -1,13 +1,17 @@
 import React from 'react';
 import {Image,SafeAreaView,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View,} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { PublicStackParamList } from '../../navigation/navigationTypes';
 
-export function CadastroScreen() {
+type Props = NativeStackScreenProps<PublicStackParamList,'Cadastro'>;
+
+export function CadastroScreen({navigation}: Props) {
   return (
     <SafeAreaView style={styles.container}>
       
         <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-            <TouchableOpacity style={styles.returnButton}>
+            <TouchableOpacity style={styles.returnButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="#174F79"/>
             </TouchableOpacity>
 
@@ -87,7 +91,7 @@ export function CadastroScreen() {
             <View style={styles.loginContainer}>
                 <Text style={styles.loginText}>Já possui uma conta?</Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.loginLink}>Entrar</Text>
                 </TouchableOpacity>
             </View>

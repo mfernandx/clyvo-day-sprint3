@@ -1,10 +1,13 @@
-import { CadastroScreen } from './src/screen/public/CadastroScreen';
-import { InicioScreen } from './src/screen/public/InicioScreen';
-import { LoginScreen } from './src/screen/public/LoginScreen';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { PublicNavigator } from './src/navigation/PublicNavigator';
+
 
 export default function App() {
     return (
-        <LoginScreen />
+        <NavigationContainer>
+            <PublicNavigator />
+        </NavigationContainer>
     );
 }
 
