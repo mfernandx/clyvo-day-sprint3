@@ -1,12 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { InicioScreen } from './src/screen/public/InicioScreen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>CLYVO DAY</Text>
-      <StatusBar style="auto" />
-    </View>
+    <InicioScreen/>
   );
 }
 
