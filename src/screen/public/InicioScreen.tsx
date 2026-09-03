@@ -1,3 +1,4 @@
+import React from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export function InicioScreen() {
@@ -8,7 +9,7 @@ export function InicioScreen() {
         
             <View style={styles.conteudo}>
                 
-                <Image source={require('../../../assets/icon-cat.png')} style={styles.icon} resizeMode="contain"/>
+                <Image source={require('../../../assets/icon-cat.png')} style={styles.catIcon} resizeMode="contain"/>
 
                 <Image source={require('../../../assets/logo-clyvoday.png')} style={styles.logo} resizeMode="contain"/>
                 
@@ -19,11 +20,11 @@ export function InicioScreen() {
                 <View style={styles.opcoes}>
 
                     <TouchableOpacity style={styles.buttonCadastro}>
-                        <Text style={styles.buttonCadastroText}>Entrar</Text>
+                        <Text style={styles.buttonCadastroText}>Começar</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.buttonLogin}>
-                        <Text style={styles.buttonLoginText}>Criar conta</Text>
+                        <Text style={styles.buttonLoginText}>Já tenho uma conta</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
         padding: 24,
     },
 
-    icon: {
+    catIcon: {
         width: 350,
         height: 190,
         alignSelf: "center",
