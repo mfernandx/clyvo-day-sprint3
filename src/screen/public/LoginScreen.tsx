@@ -62,7 +62,7 @@ export function LoginScreen({ navigation }: Props) {
             <View style={styles.cadastroContainer}>
                 <Text style={styles.cadastroText}>Ainda não tem uma conta?</Text>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+                <TouchableOpacity onPress={() => navigation.navigate('CadastroUser')}>
                     <Text style={styles.cadastroLink}>Criar conta</Text>
                 </TouchableOpacity>
             </View>

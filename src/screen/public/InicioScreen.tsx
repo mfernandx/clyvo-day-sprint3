@@ -23,7 +23,7 @@ export function InicioScreen({navigation }: Props) {
                 
                 <View style={styles.opcoes}>
 
-                    <TouchableOpacity style={styles.buttonCadastro} onPress={() => navigation.navigate('Cadastro')}>
+                    <TouchableOpacity style={styles.buttonCadastro} onPress={() => navigation.navigate('CadastroUser')}>
                         <Text style={styles.buttonCadastroText}>Começar</Text>
                     </TouchableOpacity>
 

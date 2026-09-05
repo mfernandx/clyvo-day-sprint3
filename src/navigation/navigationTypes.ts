@@ -1,5 +1,7 @@
 export type PublicStackParamList = {
     Inicio: undefined;
     Login: undefined;
-    Cadastro: undefined;
+    CadastroUser: undefined;
+    CadastroPet: undefined;
+    CadastroVeterinarian: undefined;
 };
