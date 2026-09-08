@@ -4,12 +4,80 @@ import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PublicStackParamList } from '../../navigation/navigationTypes';
 import { TypeUser } from '../../model/User';
+import { useRegisterUser} from '../../context/CadastroContext';
+import { userRegisterSchema } from '../../utils/validation/userRegisterSchema';
+import * as yup from 'yup';
 
 type Props = NativeStackScreenProps<PublicStackParamList,'CadastroUser'>;
+
+interface CadastroErrors {
+    fullName?: string;
+    cpf?: string;
+    email?: string;
+    phoneNumber?: string;
+    password?: string;
+    typeUser?: string;
+}
 
 export function CadastroUserScreen({navigation}: Props) {
 
     const [selectedUserType, setSelectedUserType] = useState<TypeUser | null>(null);
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState<CadastroErrors>({});
+    const { saveRegisterUserData } = useRegisterUser();
+
+    async function handleContinue() {
+
+        try {
+            setErrors({});
+
+            if (!selectedUserType) {
+            setErrors({
+                typeUser: 'Selecione um tipo de usuário.',
+            });
+
+            return;
+            }
+
+            const data = {
+                fullName: fullName.trim(),
+                email: email.trim(),
+                phoneNumber: phoneNumber.trim(),
+                password,
+                typeUser: selectedUserType,
+            };
+
+            await userRegisterSchema.validate(data, {abortEarly: false});
+
+            saveRegisterUserData(data);
+
+            if (selectedUserType === 'Tutor') {
+                navigation.navigate('CadastroPet');
+                return;
+            }
+
+            navigation.navigate('CadastroVeterinarian');
+
+        } catch (error) {
+
+            if (error instanceof yup.ValidationError) {
+            const validationErrors: CadastroErrors = {};
+
+            error.inner.forEach((validationError) => {
+                const field = validationError.path as keyof CadastroErrors;
+
+                if (field && !validationErrors[field]) {
+                    validationErrors[field] = validationError.message;
+                }
+            },);
+
+            setErrors(validationErrors);
+            }
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,22 +107,24 @@ export function CadastroUserScreen({navigation}: Props) {
                     <Text style={styles.tipoPerfilTitulo}>Como você usará o CLYVO DAY?</Text>
 
                     <View style={styles.opcoesPerfil}>
-                        <TouchableOpacity style={styles.perfilCard} onPress={() => setSelectedUserType('Tutor')}>
-                            <Ionicons name="paw-outline" size={27} color="#2877E6"/>
+                        <TouchableOpacity style={[styles.perfilCard, selectedUserType === 'Tutor' && styles.perfilCardSelected]} onPress={() => setSelectedUserType('Tutor')}>
+                            <Ionicons name="paw-outline" size={27} color={selectedUserType === 'Tutor' ? '#FFFFFF' : '#2877E6'}/>
 
-                            <Text style={styles.perfilCardTitulo}>Tutor</Text>
+                            <Text style={[styles.perfilCardTitulo, selectedUserType === 'Tutor' && styles.perfilCardTituloSelected,]}>Tutor</Text>
 
-                            <Text style={styles.perfilCardDescricao}>Cuido dos meus pets</Text>
+                            <Text style={[styles.perfilCardDescricao, selectedUserType === 'Tutor' && styles.perfilCardDescricaoSelected,]}>Cuido dos meus pets</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.perfilCard} onPress={() => setSelectedUserType('Veterinario')}>
-                            <Ionicons name="medical-outline" size={27} color="#2877E6"/>
+                        <TouchableOpacity style={[styles.perfilCard, selectedUserType === 'Veterinario' && styles.perfilCardSelected]} onPress={() => setSelectedUserType('Veterinario')}>
+                            <Ionicons name="medical-outline" size={27} color={selectedUserType === 'Veterinario' ? '#FFFFFF' : '#2877E6'}/>
 
-                            <Text style={styles.perfilCardTitulo}>Veterinário</Text>
+                            <Text style={[styles.perfilCardTitulo, selectedUserType === 'Veterinario' && styles.perfilCardTituloSelected,]}>Veterinário</Text>
 
-                            <Text style={styles.perfilCardDescricao}>Acompanho pacientes</Text>
+                            <Text style={[styles.perfilCardDescricao, selectedUserType === 'Veterinario' && styles.perfilCardDescricaoSelected,]}>Acompanho pacientes</Text>
                         </TouchableOpacity>
                     </View>
+
+                    {errors.typeUser && (<Text style={styles.fieldError}>{errors.typeUser}</Text>)}
                 </View>
 
                 <View style={styles.form}>
@@ -64,8 +134,10 @@ export function CadastroUserScreen({navigation}: Props) {
 
                         <View style={styles.inputContainer}>
                             <Ionicons name="person-outline" size={20} color="#7B9AB3"/>
-                            <TextInput style={styles.input} placeholder="Digite seu nome completo" placeholderTextColor="#9BB0C1"/>
+                            <TextInput style={styles.input} placeholder="Digite seu nome completo" placeholderTextColor="#9BB0C1" value={fullName} onChangeText={setFullName}/>
                         </View>
+
+                        {errors.fullName && (<Text style={styles.fieldError}>{errors.fullName}</Text>)}
                     </View>
 
                     <View>
@@ -73,8 +145,10 @@ export function CadastroUserScreen({navigation}: Props) {
 
                         <View style={styles.inputContainer}>
                             <Ionicons name="mail-outline" size={20} color="#7B9AB3"/>
-                            <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#9BB0C1" keyboardType="email-address" autoCapitalize="none"/>
+                            <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#9BB0C1" keyboardType="email-address" autoCapitalize="none" autoCorrect={false} value={email} onChangeText={setEmail}/>
                         </View>
+
+                        {errors.email && (<Text style={styles.fieldError}>{errors.email}</Text>)}
                     </View>
 
                     <View>
@@ -82,30 +156,25 @@ export function CadastroUserScreen({navigation}: Props) {
 
                         <View style={styles.inputContainer}>
                             <Ionicons name="call-outline" size={20} color="#7B9AB3"/>
-                            <TextInput style={styles.input} placeholder="Digite seu telefone" placeholderTextColor="#9BB0C1" keyboardType="phone-pad"/>
+                            <TextInput style={styles.input} placeholder="Digite seu telefone" placeholderTextColor="#9BB0C1" keyboardType="phone-pad" value={phoneNumber} onChangeText={setPhoneNumber}/>
                         </View>
+
+                        {errors.phoneNumber && (<Text style={styles.fieldError}>{errors.phoneNumber}</Text>)}
                     </View>
 
                     <View>
                         <Text style={styles.label}>Senha</Text>
                         
-                        <View style={styles.inputContainer}>
+                        <View style={[styles.inputContainer,errors.password && styles.inputContainerError]}>
                             <Ionicons name="lock-closed-outline" size={20} color="#7B9AB3"/>
-                            <TextInput style={styles.input} placeholder="Crie uma senha" placeholderTextColor="#9BB0C1" secureTextEntry/>
+                            <TextInput style={styles.input} placeholder="Crie uma senha" placeholderTextColor="#9BB0C1" secureTextEntry autoCapitalize="none" value={password} onChangeText={setPassword}/>
                         </View>
+
+                        {errors.password && (<Text style={styles.fieldError}>{errors.password}</Text>)}
                     </View>
 
-                    <TouchableOpacity style={[styles.buttonContinuar, !selectedUserType && styles.registerButtonDisabled]} disabled={!selectedUserType}
-                        onPress={() => {
-                            if (selectedUserType === 'Tutor') {
-                                navigation.navigate('CadastroPet');
-                                return;
-                            }
-                        
-                        navigation.navigate('CadastroVeterinarian');
-                        }}> 
-    
-                        <Text style={styles.buttonCadastroText}>Continuar</Text>
+                    <TouchableOpacity style={styles.buttonContinuar} onPress={handleContinue}>
+                        <Text style={styles.buttonContinuarText}>Continuar</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -242,6 +311,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    perfilCardSelected: {
+        backgroundColor: '#2877E6',
+        borderColor: '#2877E6',
+    },
+
+    perfilCardTituloSelected: {
+        color: '#FFFFFF',
+    },
+
+    perfilCardDescricaoSelected: {
+        color: '#EAF3FF',
+    },
+
     form: {
         marginTop: 28,
         gap: 19,
@@ -265,11 +347,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
     },
 
+    inputContainerError: {
+        borderColor: '#D77A7A',
+    },
+
     input: {
         flex: 1,
         marginLeft: 12,
         color: '#174F79',
         fontSize: 16,
+    },
+
+    fieldError: {
+        marginTop: 6,
+        marginLeft: 4,
+        color: '#B84B4B',
+        fontSize: 13,
     },
 
     buttonContinuar: {
@@ -281,14 +374,10 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
 
-    buttonCadastroText: {
+    buttonContinuarText: {
         color: '#FFFFFF',
         fontSize: 18,
         fontWeight: '700',
-    },
-
-    registerButtonDisabled: {
-        opacity: 0.45,
     },
 
     loginContainer: {

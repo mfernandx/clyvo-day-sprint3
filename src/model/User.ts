@@ -7,4 +7,12 @@ interface User {
     typeUser: TypeUser;
 }
 
-export { TypeUser, User };
+interface RegisterUserData {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+    typeUser: TypeUser;
+}
+
+export { TypeUser, User, RegisterUserData };

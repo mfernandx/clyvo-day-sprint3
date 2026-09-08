@@ -1,3 +1,6 @@
+import { CareEvent } from "./CareEvent";
+import { MonitoringPet } from "./MonitoringPet";
+
 type Sex = 'Fêmea' | 'Macho' | 'Desconhecido' ;
 
 interface Pet {
@@ -11,4 +14,28 @@ interface Pet {
     birthDate : string;
 }
 
-export { Sex, Pet };
+interface RegisterPetRequest {
+    tutorId: number;
+    name: string;
+    species: string;
+    breed: string;
+    sex: string;
+    age: number;
+    birthDate: string;
+}
+
+interface RegisterPetResponse {
+    petId: number;
+    tutorId: number;
+    tutor: unknown | null;
+    name: string;
+    species: string;
+    breed: string;
+    sex: string;
+    age: number;
+    birthDate: string;
+    petMonitorings: MonitoringPet[];
+    careEvents: CareEvent[];
+}
+
+export { Sex, Pet, RegisterPetRequest, RegisterPetResponse };
