@@ -1,17 +1,71 @@
-import React from 'react';
-import {Image,SafeAreaView,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View} from 'react-native';
+import React, { useState } from 'react';
+import {ActivityIndicator, Image,SafeAreaView,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PublicStackParamList } from '../../navigation/navigationTypes';
+import { useLogin } from '../../hooks/useLogin';
+import { loginSchema} from '../../utils/validation/loginSchema';
+import * as yup from 'yup';
 
 type Props = NativeStackScreenProps<PublicStackParamList,'Login'>;
 
+interface LoginErrors {
+    email?: string;
+    password?: string;
+}
+
 export function LoginScreen({ navigation }: Props) {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState<LoginErrors>({});
+    const loginMutation = useLogin();
+
+    async function handleLogin() {
+        try {
+
+            setErrors({});
+
+            await loginSchema.validate(
+                {email,password,},
+                {abortEarly: false,},
+            );
+
+            const result = await loginMutation.mutateAsync({
+                email: email.trim(),
+                password,
+            });
+
+            console.log('Usuário autenticado:',result.user.fullName);
+        
+        } catch (error) {
+            if (error instanceof yup.ValidationError) {
+
+                const validationErrors: LoginErrors = {};
+                error.inner.forEach((validationError) => {
+
+                    if (validationError.path === 'email') {
+                        validationErrors.email = validationError.message;
+                    }
+
+                    if (validationError.path === 'password') {
+                        validationErrors.password = validationError.message;
+                    }
+                });
+
+                setErrors(validationErrors);
+
+                return;
+            }
+        }
+    }
+
     return (
+
         <SafeAreaView style={styles.container}>
       
         <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-            <TouchableOpacity style={styles.returnButton} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={styles.returnButton} onPress={() => navigation.goBack()} disabled={loginMutation.isPending}>
                 <Ionicons name="arrow-back" size={24} color="#174F79"/>
             </TouchableOpacity>
 
@@ -30,25 +84,40 @@ export function LoginScreen({ navigation }: Props) {
 
                     <Text style={styles.label}>E-mail</Text>
 
-                    <View style={styles.inputContainer}>
+                    <View style={[styles.inputContainer, errors.email && styles.inputContainerError]}>
                         <Ionicons name="mail-outline" size={20} color="#7B9AB3"/>
-                        <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#9BB0C1" keyboardType="email-address" autoCapitalize="none"/>
+                        <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#9BB0C1" keyboardType="email-address" autoCapitalize="none" autoCorrect={false} value={email} onChangeText={setEmail} editable={!loginMutation.isPending}/>
                     </View>
+
+                    {errors.email && (<Text style={styles.fieldError}>{errors.email}</Text>)}
 
                 </View>
 
                 <View>
                     <Text style={styles.label}>Senha</Text>
 
-                    <View style={styles.inputContainer}>
+                    <View style={[styles.inputContainer, errors.password && styles.inputContainerError]}>
                         <Ionicons name="lock-closed-outline" size={20} color="#7B9AB3"/>
-                        <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#9BB0C1" secureTextEntry/>
+                        <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#9BB0C1" secureTextEntry value={password} onChangeText={setPassword} editable={!loginMutation.isPending}/>
                     </View>
+
+                    {errors.password && (<Text style={styles.fieldError}>{errors.password}</Text>)}
+
                 </View>
 
 
-                <TouchableOpacity style={styles.buttonLogin}>
-                    <Text style={styles.buttonLoginText}>Entrar</Text>
+                <TouchableOpacity style={[styles.buttonLogin,loginMutation.isPending && styles.loginButtonDisabled]} activeOpacity={0.8} disabled={loginMutation.isPending} onPress={handleLogin}>
+                    
+                    {loginMutation.isPending ? (
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator size="small" color="#FFFFFF"/>
+
+                            <Text style={styles.buttonLoginText}>Entrando...</Text>
+                        </View>
+                        ) : (
+                        <Text style={styles.buttonLoginText}>Entrar</Text>
+                    )}
+                    
                 </TouchableOpacity>
 
             </View>
@@ -62,7 +131,7 @@ export function LoginScreen({ navigation }: Props) {
             <View style={styles.cadastroContainer}>
                 <Text style={styles.cadastroText}>Ainda não tem uma conta?</Text>
 
-                <TouchableOpacity onPress={() => navigation.navigate('CadastroUser')}>
+                <TouchableOpacity onPress={() => navigation.navigate('CadastroUser')} disabled={loginMutation.isPending}>
                     <Text style={styles.cadastroLink}>Criar conta</Text>
                 </TouchableOpacity>
             </View>
@@ -150,11 +219,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
     },
 
+    inputContainerError: {
+        borderColor: '#D77A7A',
+    },
+
     input: {
         flex: 1,
         marginLeft: 12,
         fontSize: 16,
         color: '#174F79',
+    },
+
+    fieldError: {
+        marginTop: 6,
+        marginLeft: 4,
+        color: '#B84B4B',
+        fontSize: 13,
     },
 
     buttonLogin: {
@@ -166,10 +246,20 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
 
+    loginButtonDisabled: {
+        opacity: 0.7,
+    },    
+
     buttonLoginText: {
         color: '#FFFFFF',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+
+    loadingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
     },
 
     divisorContainer: {
