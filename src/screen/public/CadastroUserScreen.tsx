@@ -12,7 +12,6 @@ type Props = NativeStackScreenProps<PublicStackParamList,'CadastroUser'>;
 
 interface CadastroErrors {
     fullName?: string;
-    cpf?: string;
     email?: string;
     phoneNumber?: string;
     password?: string;
@@ -35,11 +34,8 @@ export function CadastroUserScreen({navigation}: Props) {
             setErrors({});
 
             if (!selectedUserType) {
-            setErrors({
-                typeUser: 'Selecione um tipo de usuário.',
-            });
-
-            return;
+                setErrors({typeUser: 'Selecione um tipo de usuário.',});
+                return;
             }
 
             const data = {
@@ -64,17 +60,17 @@ export function CadastroUserScreen({navigation}: Props) {
         } catch (error) {
 
             if (error instanceof yup.ValidationError) {
-            const validationErrors: CadastroErrors = {};
+                const validationErrors: CadastroErrors = {};
 
-            error.inner.forEach((validationError) => {
-                const field = validationError.path as keyof CadastroErrors;
+                error.inner.forEach((validationError) => {
+                    const field = validationError.path as keyof CadastroErrors;
 
-                if (field && !validationErrors[field]) {
-                    validationErrors[field] = validationError.message;
-                }
-            },);
+                    if (field && !validationErrors[field]) {
+                        validationErrors[field] = validationError.message;
+                    }
+                },);
 
-            setErrors(validationErrors);
+                setErrors(validationErrors);
             }
         }
     }
@@ -132,7 +128,7 @@ export function CadastroUserScreen({navigation}: Props) {
                     <View>
                         <Text style={styles.label}>Nome completo</Text>
 
-                        <View style={styles.inputContainer}>
+                        <View style={[styles.inputContainer, errors.fullName && styles.inputContainerError]}>
                             <Ionicons name="person-outline" size={20} color="#7B9AB3"/>
                             <TextInput style={styles.input} placeholder="Digite seu nome completo" placeholderTextColor="#9BB0C1" value={fullName} onChangeText={setFullName}/>
                         </View>
@@ -143,7 +139,7 @@ export function CadastroUserScreen({navigation}: Props) {
                     <View>
                         <Text style={styles.label}>E-mail</Text>
 
-                        <View style={styles.inputContainer}>
+                        <View style={[styles.inputContainer, errors.email && styles.inputContainerError]}>
                             <Ionicons name="mail-outline" size={20} color="#7B9AB3"/>
                             <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#9BB0C1" keyboardType="email-address" autoCapitalize="none" autoCorrect={false} value={email} onChangeText={setEmail}/>
                         </View>
@@ -154,7 +150,7 @@ export function CadastroUserScreen({navigation}: Props) {
                     <View>
                         <Text style={styles.label}>Telefone</Text>
 
-                        <View style={styles.inputContainer}>
+                        <View style={[styles.inputContainer, errors.phoneNumber && styles.inputContainerError]}>
                             <Ionicons name="call-outline" size={20} color="#7B9AB3"/>
                             <TextInput style={styles.input} placeholder="Digite seu telefone" placeholderTextColor="#9BB0C1" keyboardType="phone-pad" value={phoneNumber} onChangeText={setPhoneNumber}/>
                         </View>
