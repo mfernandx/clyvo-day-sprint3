@@ -28,4 +28,10 @@ export const authService = {
             message: authData.message,
         };
     },
+
+    async me(): Promise<User> {
+        const response = await api.get<User>('/api/Auth/me',);
+
+        return response.data;
+    },
 };

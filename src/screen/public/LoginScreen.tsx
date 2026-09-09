@@ -6,6 +6,7 @@ import { PublicStackParamList } from '../../navigation/navigationTypes';
 import { useLogin } from '../../hooks/useLogin';
 import { loginSchema} from '../../utils/validation/loginSchema';
 import * as yup from 'yup';
+import { useAuth } from '../../context/AuthContext';
 
 type Props = NativeStackScreenProps<PublicStackParamList,'Login'>;
 
@@ -20,6 +21,7 @@ export function LoginScreen({ navigation }: Props) {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<LoginErrors>({});
     const loginMutation = useLogin();
+    const { signIn } = useAuth();
 
     async function handleLogin() {
         try {
@@ -27,14 +29,16 @@ export function LoginScreen({ navigation }: Props) {
             setErrors({});
 
             await loginSchema.validate(
-                {email,password,},
-                {abortEarly: false,},
+                {email,password},
+                {abortEarly: false},
             );
 
             const result = await loginMutation.mutateAsync({
                 email: email.trim(),
                 password,
             });
+
+            await signIn(result.token,result.user);
 
             console.log('Usuário autenticado:',result.user.fullName);
         
