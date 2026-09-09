@@ -1,19 +1,71 @@
 import React from 'react';
-import {Text,TouchableOpacity,View} from 'react-native';
-import { useAuth } from '../context/AuthContext';
+import {createBottomTabNavigator,} from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { TutorTabParamList } from './navigationTypes';
+import { TutorHomeScreen } from '../screen/tutor/TutorHomeScreen';
+import { ComunityScreen } from '../screen/comunity/ComunityScreen';
+import { JourneyScreen } from '../screen/tutor/JourneyScreen';
+import { TutorProfileScreen } from '../screen/tutor/TutorProfileScreen';
+
+const Tab = createBottomTabNavigator<TutorTabParamList>();
 
 export function TutorNavigator() {
-    const { user, signOut } =useAuth();
-
     return (
-        <View style={{flex: 1,alignItems: 'center',justifyContent: 'center'}}>
-            <Text >Área do Tutor</Text>
+        <Tab.Navigator initialRouteName="TutorHome" screenOptions={({ route }) => ({
+            headerShown: false,
+            tabBarActiveTintColor: '#2877E6',
+            tabBarInactiveTintColor: '#8DA4B6',
+            tabBarStyle: {
+                height: 68,
+                paddingTop: 7,
+                paddingBottom: 8,
+                borderTopWidth: 0,
+                backgroundColor: '#FFFFFF',
+                elevation: 10,
+            },
+            tabBarLabelStyle: {
+                fontSize: 12,
+                fontWeight: '600',
+            },
 
-            <Text>Olá, {user?.fullName}</Text>
+            tabBarIcon: ({color,size,focused}) => {
+                let iconName:
+                    | 'home'
+                    | 'home-outline'
+                    | 'paw'
+                    | 'paw-outline'
+                    | 'book'
+                    | 'book-outline'
+                    | 'person'
+                    | 'person-outline';
 
-            <TouchableOpacity onPress={signOut} style={{marginTop: 20}}>
-                <Text>Sair</Text>
-            </TouchableOpacity>
-        </View>
+                if (route.name === 'TutorHome') {
+                    iconName = focused ? 'home' : 'home-outline';
+                    
+                } else if (route.name === 'Comunity') {
+                    iconName = focused ? 'paw' : 'paw-outline';
+
+                } else if (route.name === 'Journey') {
+                    iconName = focused ? 'book' : 'book-outline';
+
+                } else {
+                    iconName = focused ? 'person' : 'person-outline';
+                }
+
+                return (
+                    <Ionicons name={iconName} size={size} color={color}/>
+                );
+            },
+        })}>
+
+            <Tab.Screen name="TutorHome" component={TutorHomeScreen} options={{title: 'HomeTutor'}}/>
+
+            <Tab.Screen name="Journey" component={JourneyScreen} options={{title: 'Jornada'}}/>
+
+            <Tab.Screen name="Comunity" component={ComunityScreen} options={{title: 'Comunity'}}/>
+
+            <Tab.Screen name="TutorProfile" component={TutorProfileScreen} options={{title: 'Perfil'}}/>
+
+        </Tab.Navigator>
     );
 }
