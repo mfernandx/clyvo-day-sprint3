@@ -13,6 +13,11 @@ export type TutorTabParamList = {
     TutorProfile: undefined;
 };
 
+export type TutorStackParamList = {
+    TutorTabs: undefined;
+    PetsTutor: undefined;
+};
+
 export type VeterinarianTabParamList = {
     VeterinarianHome: undefined;
     Patients: undefined;

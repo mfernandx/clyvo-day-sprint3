@@ -2,9 +2,12 @@ import React from 'react';
 import {SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
-
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { TutorStackParamList } from '../../navigation/navigationTypes';
+import { useNavigation } from '@react-navigation/native';
 
 export function TutorHomeScreen() {
+    const navigation =useNavigation<NativeStackNavigationProp<TutorStackParamList>>();
     const { user } = useAuth();
 
     function getFirstName() {
@@ -57,7 +60,7 @@ export function TutorHomeScreen() {
                 </View>
 
 
-                <TouchableOpacity style={styles.petsCard} activeOpacity={0.5}>
+                <TouchableOpacity style={styles.petsCard} activeOpacity={0.5} onPress={() => navigation.navigate('PetsTutor')}>
                     
                     <View style={styles.petsIconContainer}>
                         <Ionicons name="paw" size={30} color="#2877E6"/>

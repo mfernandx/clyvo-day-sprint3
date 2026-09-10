@@ -1,16 +1,20 @@
 import React from 'react';
 import {createBottomTabNavigator,} from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { TutorTabParamList } from './navigationTypes';
+import { TutorStackParamList, TutorTabParamList } from './navigationTypes';
 import { TutorHomeScreen } from '../screen/tutor/TutorHomeScreen';
 import { ComunityScreen } from '../screen/comunity/ComunityScreen';
 import { JourneyScreen } from '../screen/tutor/JourneyScreen';
 import { TutorProfileScreen } from '../screen/tutor/TutorProfileScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { PetsScreen } from '../screen/tutor/PetsScreen';
 
 const Tab = createBottomTabNavigator<TutorTabParamList>();
+const Stack = createNativeStackNavigator<TutorStackParamList>();
 
-export function TutorNavigator() {
+function TutorTabs() {
     return (
+        
         <Tab.Navigator initialRouteName="TutorHome" screenOptions={({ route }) => ({
             headerShown: false,
             tabBarActiveTintColor: '#2877E6',
@@ -67,5 +71,15 @@ export function TutorNavigator() {
             <Tab.Screen name="TutorProfile" component={TutorProfileScreen} options={{title: 'Perfil'}}/>
 
         </Tab.Navigator>
+    );
+}
+
+export function TutorNavigator() {
+    return (
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="TutorTabs" component={TutorTabs}/>
+
+            <Stack.Screen name="PetsTutor" component={PetsScreen}/>
+        </Stack.Navigator>
     );
 }
