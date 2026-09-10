@@ -5,10 +5,13 @@ import { useAuth } from '../../context/AuthContext';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TutorStackParamList } from '../../navigation/navigationTypes';
 import { useNavigation } from '@react-navigation/native';
+import { usePets } from '../../hooks/usePets';
 
 export function TutorHomeScreen() {
     const navigation =useNavigation<NativeStackNavigationProp<TutorStackParamList>>();
     const { user } = useAuth();
+    const {data: pets,isLoading: isLoadingPets,isError: isPetsError,} = usePets();
+    const firstPet = pets?.[0];
 
     function getFirstName() {
         if (!user?.fullName) {
@@ -92,7 +95,7 @@ export function TutorHomeScreen() {
 
                 <View style={styles.acoesRapidas}>
 
-                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5} disabled={!firstPet} onPress={() => {if (!firstPet) {return;} navigation.navigate('DailyPetLogCreate',{petId: firstPet.petId,});}} >
                         <View style={[styles.acaoIcon,styles.acaoIconAzul]}>
                             <Ionicons name="book-outline" size={28} color="#2877E6"/>
                         </View>

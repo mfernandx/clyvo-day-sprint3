@@ -16,6 +16,7 @@ export type TutorTabParamList = {
 export type TutorStackParamList = {
     TutorTabs: undefined;
     PetsTutor: undefined;
+    DailyPetLogCreate: {petId: number;};
 };
 
 export type VeterinarianTabParamList = {
