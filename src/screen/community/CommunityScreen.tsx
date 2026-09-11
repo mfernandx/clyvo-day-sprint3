@@ -55,7 +55,7 @@ export function CommunityScreen({navigation}: Props) {
                         <Text style={styles.feedTitulo}>Conversas da comunidade</Text>
                         <Text style={styles.feedSubtitulo}>Veja o que está sendo compartilhado</Text>
                     </View>
-
+                    
                     <Ionicons name="sparkles-outline" size={21} color="#65A8EA"/>
                 </View>
 

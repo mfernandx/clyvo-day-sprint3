@@ -1,16 +1,22 @@
-export interface CreateCommunityPostRequest {
+type CommunityUserType = | 'Tutor' | 'Veterinario';
+
+interface CreateCommunityPostRequest {
     category: string;
     content: string;
     imageUrl?: string | null;
     location?: string | null;
 }
 
-export interface CommunityPost {
+interface CommunityPost {
     communityPostId: number;
     userId: number;
+    userName: string;
+    userType: CommunityUserType;
     category: string;
     content: string;
     imageUrl?: string | null;
     location?: string | null;
     registeredAt: string;
 }
+
+export {CommunityUserType, CreateCommunityPostRequest, CommunityPost}

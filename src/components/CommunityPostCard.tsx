@@ -1,11 +1,11 @@
 import React from 'react';
 import {StyleSheet,Text,View} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import {CommunityPost} from './../model/CommunityPost';
 
-interface Props {post: CommunityPost;}
+interface Props {post: CommunityPost}
 
-function getCategoryStyle(category: string) {
+function getCategoryStyle(category: string,) {
 
     switch (category) {
         case 'Momento com meu pet':
@@ -45,8 +45,7 @@ function getCategoryStyle(category: string) {
 
         case 'Dúvida':
             return {
-                icon:
-                'help-circle-outline' as const,
+                icon: 'help-circle-outline' as const,
                 backgroundColor: '#F1ECFF',
                 iconColor: '#7254D6',
             };
@@ -67,37 +66,80 @@ function getCategoryStyle(category: string) {
 
         default:
             return {
-                icon:
-                'chatbubble-outline' as const,
+                icon: 'chatbubble-outline' as const,
                 backgroundColor: '#F0F3F6',
                 iconColor: '#70879A',
             };
     }
 }
 
-function formatPostDate(registeredAt: string) {
+function getInitials(name: string) {
+
+    const parts = name.trim().split(' ').filter(Boolean);
+
+    if (parts.length === 0) {
+        return '?';
+    }
+
+    if (parts.length === 1) {
+        return parts[0].substring(0, 2).toUpperCase();
+    }
+
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function getUserTypeLabel(userType: string) {
+
+    return userType === 'Veterinario' ? 'Veterinário(a)' : 'Tutor(a)';
+}
+
+function formatPostDate(registeredAt: string,) {
 
     const date = new Date(registeredAt);
     return date.toLocaleDateString('pt-BR',{day: '2-digit',month: 'short',year: 'numeric'});
 
 }
 
-export function CommunityPostCard({post}: Props) {
-  const categoryStyle = getCategoryStyle(post.category);
+function formatPostTime(registeredAt: string) {
 
-  return (
+    const date = new Date(registeredAt);
+    return date.toLocaleTimeString('pt-BR',{hour: '2-digit',minute: '2-digit'});
+
+}
+
+export function CommunityPostCard({post}: Props) {
+
+    const categoryStyle = getCategoryStyle(post.category);
+    const isVeterinarian = post.userType === 'Veterinario';
+
+    return (
         <View style={styles.card}>
             <View style={styles.usuarioRow}>
-                <View style={styles.avatar}>
-                    <Ionicons name="person-outline" size={22} color="#2877E6"/>
+                <View style={[styles.avatar,isVeterinarian ? styles.vetAvatar : styles.tutorAvatar]}>
+                    <Text style={[styles.avatarText,isVeterinarian ? styles.vetAvatarText : styles.tutorAvatarText]}>{getInitials(post.userName)}</Text>
                 </View>
 
                 <View style={styles.usuarioInfo}>
-                    <Text style={styles.usuarioNome}>Membro da comunidade</Text>
-                    <Text style={styles.data}>{formatPostDate(post.registeredAt)}</Text>
+                    <View style={styles.usuarioNomeRow}>
+                        <Text style={styles.usuarioNome} numberOfLines={1}>{post.userName}</Text>
+
+                        {isVeterinarian && (
+                            <View style={styles.vetBadge}>
+                                <Ionicons name="medkit" size={11} color="#3DA68D"/>
+                                <Text style={styles.vetBadgeText}>Vet</Text>
+                            </View>
+                        )}
+                    </View>
+
+                    <View style={styles.usuarioMeta}>
+                        <Text style={styles.usuarioType}>{getUserTypeLabel(post.userType)}</Text>
+                        <Text style={styles.dot}>•</Text>
+                        <Text style={styles.data}>{formatPostDate(post.registeredAt)}</Text>
+                        <Text style={styles.dot}>•</Text>
+                        <Text style={styles.data}>{formatPostTime(post.registeredAt)}</Text>
+                    </View>
                 </View>
 
-                <Ionicons name="ellipsis-horizontal" size={21} color="#8BA0B1"/>
             </View>
 
             <View style={[styles.categoria,{backgroundColor:categoryStyle.backgroundColor}]}>
@@ -109,15 +151,11 @@ export function CommunityPostCard({post}: Props) {
 
             {post.location && (
                 <View style={styles.localizacao}>
-                    <Ionicons name="location-outline" size={16} color="#8299AA"/>
-                    <Text style={styles.localizacaoText}>{post.location}</Text>
-                </View>
-            )}
+                    <View style={styles.localizacaoIcon}>
+                        <Ionicons name="location-outline" size={16} color="#2877E6"/>
+                    </View>
 
-            {post.imageUrl && (
-                <View style={styles.imagemPlaceholder}>
-                    <Ionicons name="image-outline" size={28} color="#8BBCE8"/>
-                    <Text style={styles.imagemPlaceholderText}>Imagem da publicação</Text>
+                    <Text style={styles.localizacaoText}>{post.location}</Text>
                 </View>
             )}
 
@@ -140,7 +178,7 @@ export function CommunityPostCard({post}: Props) {
                 </View>
             </View>
         </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
@@ -159,12 +197,32 @@ const styles = StyleSheet.create({
     },
 
     avatar: {
-        width: 46,
-        height: 46,
+        width: 48,
+        height: 48,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 16,
+        borderRadius: 17,
+    },
+
+    tutorAvatar: {
         backgroundColor: '#EAF4FF',
+    },
+
+    vetAvatar: {
+        backgroundColor: '#EAF7F3',
+    },
+
+    avatarText: {
+        fontSize: 14,
+        fontWeight: '800',
+    },
+
+    tutorAvatarText: {
+        color: '#2877E6',
+    },
+
+    vetAvatarText: {
+        color: '#3DA68D',
     },
 
     usuarioInfo: {
@@ -172,14 +230,55 @@ const styles = StyleSheet.create({
         marginLeft: 11,
     },
 
+    usuarioNomeRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 7,
+    },
+
     usuarioNome: {
+        flexShrink: 1,
         color: '#174F79',
         fontSize: 15,
         fontWeight: '700',
     },
 
+    vetBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
+        paddingHorizontal: 7,
+        paddingVertical: 3,
+        borderRadius: 9,
+        backgroundColor: '#EAF7F3',
+    },
+
+    vetBadgeText: {
+        color: '#3DA68D',
+        fontSize: 10,
+        fontWeight: '700',
+    },
+
+    usuarioMeta: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        marginTop: 3,
+    },
+
+    usuarioType: {
+        color: '#71899D',
+        fontSize: 11,
+        fontWeight: '600',
+    },
+
+    dot: {
+        marginHorizontal: 5,
+        color: '#A7B4BF',
+        fontSize: 10,
+    },
+
     data: {
-        marginTop: 2,
         color: '#8A9EAE',
         fontSize: 11,
     },
@@ -210,27 +309,22 @@ const styles = StyleSheet.create({
     localizacao: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
-        marginTop: 14,
+        gap: 7,
+        marginTop: 15,
+    },
+
+    localizacaoIcon: {
+        width: 28,
+        height: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 9,
+        backgroundColor: '#EAF4FF',
     },
 
     localizacaoText: {
-        color: '#8299AA',
-        fontSize: 12,
-    },
-
-    imagemPlaceholder: {
-        minHeight: 150,
-        marginTop: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 18,
-        backgroundColor: '#F3F8FC',
-    },
-
-    imagemPlaceholderText: {
-        marginTop: 7,
-        color: '#8BA0B1',
+        flex: 1,
+        color: '#71899D',
         fontSize: 12,
     },
 
