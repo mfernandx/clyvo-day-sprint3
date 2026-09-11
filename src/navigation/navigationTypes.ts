@@ -9,7 +9,7 @@ export type PublicStackParamList = {
 export type TutorTabParamList = {
     TutorHome: undefined;
     Journey: undefined;
-    Comunity: undefined;
+    Community: undefined;
     TutorProfile: undefined;
 };
 
@@ -23,6 +23,16 @@ export type TutorStackParamList = {
 export type VeterinarianTabParamList = {
     VeterinarianHome: undefined;
     Patients: undefined;
-    Comunity: undefined;
+    Community: undefined;
     VeterinarianProfile: undefined;
+};
+
+export type VeterinarianStackParamList = {
+    VeterinarianTabs: undefined;
+    CommunityPostCreate: undefined;
+};
+
+export type CommunityStackParamList = {
+    Community: undefined;
+    CommunityPostCreate: undefined;
 };

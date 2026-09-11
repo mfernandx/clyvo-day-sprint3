@@ -3,7 +3,7 @@ import {createBottomTabNavigator,} from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { TutorStackParamList, TutorTabParamList } from './navigationTypes';
 import { TutorHomeScreen } from '../screen/tutor/TutorHomeScreen';
-import { ComunityScreen } from '../screen/community/ComunityScreen';
+import { CommunityScreen } from '../screen/community/CommunityScreen';
 import { JourneyScreen } from '../screen/tutor/JourneyScreen';
 import { TutorProfileScreen } from '../screen/tutor/TutorProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -48,7 +48,7 @@ function TutorTabs() {
                 if (route.name === 'TutorHome') {
                     iconName = focused ? 'home' : 'home-outline';
                     
-                } else if (route.name === 'Comunity') {
+                } else if (route.name === 'Community') {
                     iconName = focused ? 'paw' : 'paw-outline';
 
                 } else if (route.name === 'Journey') {
@@ -68,7 +68,7 @@ function TutorTabs() {
 
             <Tab.Screen name="Journey" component={JourneyScreen} options={{title: 'Jornada'}}/>
 
-            <Tab.Screen name="Comunity" component={ComunityScreen} options={{title: 'Comunity'}}/>
+            <Tab.Screen name="Community" component={CommunityScreen} options={{title: 'Community'}}/>
 
             <Tab.Screen name="TutorProfile" component={TutorProfileScreen} options={{title: 'Perfil'}}/>
 

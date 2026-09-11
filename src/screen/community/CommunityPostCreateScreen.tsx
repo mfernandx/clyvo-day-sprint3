@@ -3,13 +3,13 @@ import {ActivityIndicator,SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpaci
 import { Ionicons } from '@expo/vector-icons';
 import {NativeStackScreenProps,} from '@react-navigation/native-stack';
 import * as yup from 'yup';
-import {TutorStackParamList} from '../../navigation/navigationTypes';
+import {CommunityStackParamList} from '../../navigation/navigationTypes';
 import {useCreateCommunityPost} from '../../hooks/useCreateCommunityPost';
 import {communityPostSchema} from '../../utils/validation/communityPostSchema';
 import {CommunityCategorySelector} from '../../components/CommunityCategorySelector';
 import {CommunityPostForm} from '../../components/CommunityPostForm';
 
-type Props = NativeStackScreenProps<TutorStackParamList,'CommunityPostCreate'>;
+type Props = NativeStackScreenProps<CommunityStackParamList,'CommunityPostCreate'>;
 
 interface Errors {
     category?: string;
@@ -61,7 +61,7 @@ export function CommunityPostCreateScreen({navigation,}: Props) {
                     const field = validationError.path as keyof Errors;
 
                     if (field && !validationErrors[field]) {
-                    validationErrors[field] = validationError.message;
+                        validationErrors[field] = validationError.message;
                     }
                 });
 

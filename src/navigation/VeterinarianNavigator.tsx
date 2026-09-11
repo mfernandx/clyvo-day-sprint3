@@ -1,15 +1,18 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import {VeterinarianTabParamList,} from './navigationTypes';
+import {VeterinarianStackParamList, VeterinarianTabParamList,} from './navigationTypes';
 import {VeterinarianHomeScreen} from '../screen/veterinarian/VeterinarianHomeScreen';
 import {PatientsScreen} from '../screen/veterinarian/PatientsScreen';
-import {ComunityScreen} from '../screen/community/ComunityScreen';
+import {CommunityScreen} from '../screen/community/CommunityScreen';
 import {VeterinarianProfileScreen} from '../screen/veterinarian/VeterinarianProfileScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { CommunityPostCreateScreen } from '../screen/community/CommunityPostCreateScreen';
 
 const Tab = createBottomTabNavigator<VeterinarianTabParamList>();
+const Stack = createNativeStackNavigator<VeterinarianStackParamList>();
 
-export function VeterinarianNavigator() {
+function VeterinarianTabs() {
     return (
         <Tab.Navigator initialRouteName="VeterinarianHome" screenOptions={({ route }) => ({
             headerShown: false,
@@ -45,7 +48,7 @@ export function VeterinarianNavigator() {
                 } else if (route.name === 'Patients') {
                     iconName = focused ? 'paw' : 'paw-outline';
 
-                } else if (route.name === 'Comunity') {
+                } else if (route.name === 'Community') {
                     iconName = focused ? 'people' : 'people-outline';
                     
                 } else {
@@ -62,10 +65,20 @@ export function VeterinarianNavigator() {
 
             <Tab.Screen name="Patients" component={PatientsScreen} options={{title: 'Pacientes'}}/>
 
-            <Tab.Screen name="Comunity" component={ComunityScreen} options={{title: 'Comunidade'}}/>
+            <Tab.Screen name="Community" component={CommunityScreen} options={{title: 'Comunidade'}}/>
 
             <Tab.Screen name="VeterinarianProfile" component={VeterinarianProfileScreen} options={{title: 'Perfil'}}/>
         
         </Tab.Navigator>
+    );
+}
+
+export function VeterinarianNavigator() {
+    return (
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="VeterinarianTabs" component={VeterinarianTabs}/>
+
+            <Stack.Screen name="CommunityPostCreate" component={CommunityPostCreateScreen}/>
+        </Stack.Navigator>
     );
 }
