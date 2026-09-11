@@ -2,6 +2,7 @@ import React, {createContext,ReactNode,useContext,useEffect,useState,} from 'rea
 import { User } from '../model/User';
 import { authService } from '../service/authService';
 import { sessionStorage } from '../security/sessionStorage';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AuthContextData {
     user: User | null;
@@ -19,6 +20,7 @@ export function AuthProvider({children}: AuthProviderProps) {
     const [user, setUser] =useState<User | null>(null);
     const [isLoadingSession,setIsLoadingSession] = useState(true);
     const isAuthenticated = !!user;
+    const queryClient = useQueryClient();
 
     async function signIn(token: string,authenticatedUser: User) {
         await sessionStorage.saveSession(token,authenticatedUser);
@@ -26,7 +28,10 @@ export function AuthProvider({children}: AuthProviderProps) {
     }
 
     async function signOut() {
-        await sessionStorage.clearSession();    
+        await sessionStorage.clearSession();
+
+        queryClient.clear();
+
         setUser(null);
     }
 

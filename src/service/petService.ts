@@ -4,7 +4,7 @@ import { Pet } from '../model/Pet';
 export const petService = {
 
     async getAll(): Promise<Pet[]> {
-        const response = await api.get<Pet[]>('/api/Pet');
+        const response = await api.get<Pet[]>('/api/Pet/my',);
         return response.data;
     },
     
