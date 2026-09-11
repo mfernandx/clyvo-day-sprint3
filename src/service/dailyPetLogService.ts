@@ -7,5 +7,11 @@ export const dailyPetLogService = {
         const response = await api.post<DailyPetLog>('/api/DailyPetLog',data);
 
         return response.data;
-    }
+    },
+
+    async getByPetId(petId: number): Promise<DailyPetLog[]> {
+        const response = await api.get<DailyPetLog[]>(`/api/DailyPetLog/pet/${petId}`);
+
+        return response.data;
+    },
 };

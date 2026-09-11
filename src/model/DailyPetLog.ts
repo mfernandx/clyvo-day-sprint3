@@ -13,7 +13,7 @@ export interface DailyPetLog {
     dailyPetLogId: number;
     petId: number;
     createdByUserId: number;
-    dailyPetLogType: DailyPetLogType;
+    dailyPetLogType: string;
     content: string;
     imageUrl: string | null;
     privacy: DailyPetLogPrivacy;
