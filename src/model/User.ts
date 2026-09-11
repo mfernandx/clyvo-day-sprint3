@@ -4,6 +4,7 @@ interface User {
     userId: number;
     fullName: string;
     email: string;
+    phoneNumber: string;
     typeUser: TypeUser;
 }
 

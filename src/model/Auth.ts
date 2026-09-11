@@ -10,6 +10,7 @@ interface AuthResponse {
     userId: number;
     fullName: string;
     email: string;
+    phoneNumber: string;
     typeUser: TypeUser;
     token: string;
 }
