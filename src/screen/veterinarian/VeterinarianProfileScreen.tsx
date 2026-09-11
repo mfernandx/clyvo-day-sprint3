@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {VeterinarianTabParamList} from '../../navigation/navigationTypes';
 import {ProfileActionCard} from '../../components/ProfileActionCard';
 import {useAuth} from '../../context/AuthContext';
+import { VeterinarianUser } from '../../model/User';
 
 type NavigationProp = BottomTabNavigationProp<VeterinarianTabParamList>;
 
@@ -13,6 +14,7 @@ export function VeterinarianProfileScreen() {
     const navigation = useNavigation<NavigationProp>();
     const {user,signOut} = useAuth();
     const [isLoggingOut,setIsLoggingOut] = useState(false);
+    const veterinarian = user?.typeUser === 'Veterinario' ? (user as VeterinarianUser) : null;
 
     function getInitials(name?: string) {
         if (!name) {
@@ -95,7 +97,7 @@ export function VeterinarianProfileScreen() {
 
                     <View style={styles.tipoUsuarioBadge}>
                         <Ionicons name="medkit-outline" size={14} color="#3DA68D"/>
-                        <Text style={styles.roleBadgeText}>Profissional veterinário</Text>
+                        <Text style={styles.tipoUsuarioBadgeText}>Profissional veterinário</Text>
                     </View>
 
                     <Text style={styles.usuarioEmail}>{user.email}</Text>
@@ -106,7 +108,7 @@ export function VeterinarianProfileScreen() {
 
                     <Text style={styles.sectionSubtitulo}>Acesse as principais áreas da sua experiência profissional.</Text>
 
-                    <View style={styles.actionsContainer}>
+                    <View style={styles.acoesContainer}>
                         <ProfileActionCard
                             title="Meus pacientes"
                             description="Consulte os pets cadastrados e acompanhe seus históricos."
@@ -117,19 +119,59 @@ export function VeterinarianProfileScreen() {
                         />
 
                         <ProfileActionCard
-                            title="Dados profissionais"
-                            description="Consulte suas informações profissionais cadastradas."
+                            title="Meus insights"
+                            description="Consulte seus relatórios profissionais."
                             icon="document-text-outline"
                             iconBackgroundColor="#FFF3DD"
                             iconColor="#D9912B"
-                            onPress={() => {Alert.alert('Dados profissionais')}}
+                            onPress={() => {Alert.alert('Insights')}}
                         />
+                    </View>
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitulo}>Dados profissionais</Text>
+
+                    <Text style={styles.sectionSubtitulo}>Suas informações profissionais cadastradas no CLYVO DAY.</Text>
+
+                    <View style={styles.profissionalCard}>
+                        <View style={styles.profissionalRow}>
+
+                            <View style={styles.profissionalIcon}>
+                                <Ionicons name="medkit-outline" size={19} color="#3DA68D"/>
+                            </View>
+
+                            <View style={styles.profissionalInfo}>
+                                <Text style={styles.profissionalLabel}>CRMV</Text>
+
+                                <Text style={styles.profissionalValue}>
+                                    {veterinarian?.crmv} {veterinarian?.state ? ` - ${veterinarian.state}` : ''}
+                                </Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.divisor} />
+
+                        <View style={styles.profissionalRow}>
+                            <View style={styles.profissionalIcon}>
+                                <Ionicons name="sparkles-outline" size={19} color="#3DA68D"/>
+                            </View>
+
+                            <View style={styles.profissionalInfo}>
+                                <Text style={styles.profissionalLabel}>Especialidade</Text>
+                                <Text style={styles.profissionalValue}>{veterinarian?.specialty}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.divisor} />
+
                     </View>
                 </View>
 
                 <View style={styles.section}>
 
                     <Text style={styles.sectionTitulo}>Minha conta</Text>
+                    <Text style={styles.sectionSubtitulo}>Veja aqui suas informações pessoais.</Text>
 
                     <View style={styles.contaCard}>
                         
@@ -280,7 +322,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#EAF7F3',
     },
 
-    roleBadgeText: {
+    tipoUsuarioBadgeText: {
         color: '#3DA68D',
         fontSize: 11,
         fontWeight: '700',
@@ -309,7 +351,49 @@ const styles = StyleSheet.create({
         lineHeight: 17,
     },
 
-    actionsContainer: {
+    profissionalCard: {
+        marginTop: 14,
+        paddingHorizontal: 17,
+        borderRadius: 22,
+        backgroundColor: '#FFFFFF',
+        borderWidth: 1,
+        borderColor: '#E5EEF5',
+    },
+
+    profissionalRow: {
+        minHeight: 72,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    profissionalIcon: {
+        width: 39,
+        height: 39,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 13,
+        backgroundColor: '#EAF7F3',
+    },
+
+    profissionalInfo: {
+        flex: 1,
+        marginLeft: 12,
+    },
+
+    profissionalLabel: {
+        color: '#879BAA',
+        fontSize: 11,
+        fontWeight: '600',
+    },
+
+    profissionalValue: {
+        marginTop: 3,
+        color: '#315B79',
+        fontSize: 14,
+        fontWeight: '600',
+    },
+
+    acoesContainer: {
         marginTop: 14,
         gap: 11,
     },

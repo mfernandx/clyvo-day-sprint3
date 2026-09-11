@@ -16,4 +16,11 @@ interface RegisterUserData {
     typeUser: TypeUser;
 }
 
-export { TypeUser, User, RegisterUserData };
+interface VeterinarianUser extends User {
+    typeUser: 'Veterinario';
+    crmv: string;
+    state: string;
+    specialty: string;
+}
+
+export { TypeUser, User, RegisterUserData, VeterinarianUser };
