@@ -29,6 +29,7 @@ export type VeterinarianTabParamList = {
 
 export type VeterinarianStackParamList = {
     VeterinarianTabs: undefined;
+    Community: undefined;
     CommunityPostCreate: undefined;
 };
 

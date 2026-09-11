@@ -61,7 +61,7 @@ function VeterinarianTabs() {
             },
         })}>
 
-            <Tab.Screen name="VeterinarianHome" component={VeterinarianHomeScreen} options={{title: 'HomeVeterinarian'}}/>
+            <Tab.Screen name="VeterinarianHome" component={VeterinarianHomeScreen} options={{title: 'Home'}}/>
 
             <Tab.Screen name="Patients" component={PatientsScreen} options={{title: 'Pacientes'}}/>
 
@@ -79,6 +79,8 @@ export function VeterinarianNavigator() {
             <Stack.Screen name="VeterinarianTabs" component={VeterinarianTabs}/>
 
             <Stack.Screen name="CommunityPostCreate" component={CommunityPostCreateScreen}/>
+
+            <Stack.Screen name="Community" component={CommunityScreen}/>
         </Stack.Navigator>
     );
 }

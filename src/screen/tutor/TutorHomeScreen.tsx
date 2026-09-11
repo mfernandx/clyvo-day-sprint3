@@ -51,7 +51,7 @@ export function TutorHomeScreen() {
 
                     <View style={styles.cardPrincipalConteudo}>
                         <View style={styles.cardPrincipalTextContainer}>
-                            <Text style={styles.cardPrincipalTitle}>Como foi o dia do seu pet?</Text>
+                            <Text style={styles.cardPrincipalTitulo}>Como foi o dia do seu pet?</Text>
                             <Text style={styles.cardPrincipalDescricao}>Pequenos registros ajudam a construir uma grande jornada.</Text>
                         </View>
 
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
         zIndex: 2,
     },
 
-    cardPrincipalTitle: {
+    cardPrincipalTitulo: {
         maxWidth: 220,
         color: '#174F79',
         fontSize: 24,

@@ -64,11 +64,11 @@ function TutorTabs() {
             },
         })}>
 
-            <Tab.Screen name="TutorHome" component={TutorHomeScreen} options={{title: 'HomeTutor'}}/>
+            <Tab.Screen name="TutorHome" component={TutorHomeScreen} options={{title: 'Home'}}/>
 
             <Tab.Screen name="Journey" component={JourneyScreen} options={{title: 'Jornada'}}/>
 
-            <Tab.Screen name="Community" component={CommunityScreen} options={{title: 'Community'}}/>
+            <Tab.Screen name="Community" component={CommunityScreen} options={{title: 'Comunidade'}}/>
 
             <Tab.Screen name="TutorProfile" component={TutorProfileScreen} options={{title: 'Perfil'}}/>
 
