@@ -3,12 +3,13 @@ import {createBottomTabNavigator,} from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { TutorStackParamList, TutorTabParamList } from './navigationTypes';
 import { TutorHomeScreen } from '../screen/tutor/TutorHomeScreen';
-import { ComunityScreen } from '../screen/comunity/ComunityScreen';
+import { ComunityScreen } from '../screen/community/ComunityScreen';
 import { JourneyScreen } from '../screen/tutor/JourneyScreen';
 import { TutorProfileScreen } from '../screen/tutor/TutorProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PetsScreen } from '../screen/tutor/PetsScreen';
 import {DailyPetLogCreateScreen,} from '../screen/tutor/DailyPetLogCreateScreen';
+import { CommunityPostCreateScreen } from '../screen/community/CommunityPostCreateScreen';
 
 const Tab = createBottomTabNavigator<TutorTabParamList>();
 const Stack = createNativeStackNavigator<TutorStackParamList>();
@@ -83,6 +84,8 @@ export function TutorNavigator() {
             <Stack.Screen name="PetsTutor" component={PetsScreen}/>
 
             <Stack.Screen name="DailyPetLogCreate" component={DailyPetLogCreateScreen}/>
+
+            <Stack.Screen name="CommunityPostCreate" component={CommunityPostCreateScreen}/>
         </Stack.Navigator>
     );
 }

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import {VeterinarianTabParamList,} from './navigationTypes';
 import {VeterinarianHomeScreen} from '../screen/veterinarian/VeterinarianHomeScreen';
 import {PatientsScreen} from '../screen/veterinarian/PatientsScreen';
-import {ComunityScreen} from '../screen/comunity/ComunityScreen';
+import {ComunityScreen} from '../screen/community/ComunityScreen';
 import {VeterinarianProfileScreen} from '../screen/veterinarian/VeterinarianProfileScreen';
 
 const Tab = createBottomTabNavigator<VeterinarianTabParamList>();

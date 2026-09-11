@@ -116,7 +116,7 @@ export function TutorHomeScreen() {
                 </View>
 
                 <View style={styles.acoesRapidasRow2}>
-                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5} onPress={() => navigation.navigate('CommunityPostCreate')}>
                         <View style={[styles.acaoIcon,styles.acaoIconRoxo]}>
                             <Ionicons name="people-outline" size={28} color="#6558D9"/>
                         </View>
