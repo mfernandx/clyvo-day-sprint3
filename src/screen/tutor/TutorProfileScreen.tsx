@@ -111,7 +111,7 @@ export function TutorProfileScreen() {
                             icon="trophy-outline"
                             iconBackgroundColor="#FFF3DD"
                             iconColor="#D9912B"
-                            onPress={() => {Alert.alert('Em breve','A área de conquistas será disponibilizada aqui.');}}
+                            onPress={() => navigation.navigate('Achievements')}
                         />
                     </View>
                 </View>

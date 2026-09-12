@@ -1,5 +1,7 @@
 type TypeUser = 'Tutor' | 'Veterinario';
 
+type Achievement = | 'Nenhum' | 'InicianteAtencioso'| 'TutorDedicado' | 'GuardiãoPet' | 'ClyvoMaster';
+
 interface User {
     userId: number;
     fullName: string;
@@ -23,4 +25,10 @@ interface VeterinarianUser extends User {
     specialty: string;
 }
 
-export { TypeUser, User, RegisterUserData, VeterinarianUser };
+interface TutorUser extends User {
+    typeUser: 'Tutor';
+    scoreEngagement: number;
+    achievement: Achievement;
+}
+
+export { TypeUser, Achievement, User, RegisterUserData, TutorUser, VeterinarianUser };
