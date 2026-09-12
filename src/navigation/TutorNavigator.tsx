@@ -12,6 +12,7 @@ import {DailyPetLogCreateScreen,} from '../screen/tutor/DailyPetLogCreateScreen'
 import { CommunityPostCreateScreen } from '../screen/community/CommunityPostCreateScreen';
 import { PetMonitoringCreateScreen } from '../screen/tutor/PetMonitoringCreateScreen';
 import { AchievementsScreen } from '../screen/tutor/AchievementsScreen';
+import { CareEventCreateScreen } from '../screen/tutor/CareEventCreateScreen';
 
 const Tab = createBottomTabNavigator<TutorTabParamList>();
 const Stack = createNativeStackNavigator<TutorStackParamList>();
@@ -92,6 +93,8 @@ export function TutorNavigator() {
             <Stack.Screen name="PetMonitoringCreate" component={PetMonitoringCreateScreen}/>
 
             <Stack.Screen name="Achievements" component={AchievementsScreen}/>
+            
+            <Stack.Screen name="CareEventCreate" component={CareEventCreateScreen}/>
         </Stack.Navigator>
     );
 }

@@ -20,6 +20,7 @@ export type TutorStackParamList = {
     CommunityPostCreate: undefined;
     PetMonitoringCreate: {petId: number;};
     Achievements: undefined;
+    CareEventCreate: {petId: number;};
 };
 
 export type VeterinarianTabParamList = {

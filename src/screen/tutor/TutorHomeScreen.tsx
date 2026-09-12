@@ -46,8 +46,8 @@ export function TutorHomeScreen() {
 
                 <View style={styles.cardPrincipal}>
                     
-                    <View style={styles.circleLarge} />
-                    <View style={styles.circleSmall} />
+                    <View style={styles.circuloMaior} />
+                    <View style={styles.circuloMenor} />
 
                     <View style={styles.cardPrincipalConteudo}>
                         <View style={styles.cardPrincipalTextContainer}>
@@ -95,7 +95,13 @@ export function TutorHomeScreen() {
 
                 <View style={styles.acoesRapidas}>
 
-                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5} disabled={!firstPet} onPress={() => {if (!firstPet) {return;} navigation.navigate('DailyPetLogCreate',{petId: firstPet.petId,});}} >
+                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5} disabled={!firstPet} onPress={() => {
+                        if (!firstPet) {
+                            return;
+                        } 
+                        navigation.navigate('DailyPetLogCreate',{petId: firstPet.petId,});
+                    }} >
+
                         <View style={[styles.acaoIcon,styles.acaoIconAzul]}>
                             <Ionicons name="book-outline" size={28} color="#2877E6"/>
                         </View>
@@ -133,7 +139,13 @@ export function TutorHomeScreen() {
                         <Text style={styles.acaoDescricao}>Compartilhe no feed</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5} onPress={() => {
+                        if (!firstPet) {
+                            Alert.alert('Nenhum pet cadastrado','Cadastre um pet antes de registrar um cuidado.',);
+                            return;
+                        }
+                        navigation.navigate('CareEventCreate',{petId: firstPet.petId,});
+                    }}>
                         <View style={[styles.acaoIcon,styles.acaoIconLaranja]}>
                             <Ionicons name="medical-outline" size={28} color="#D57B45"/>
                         </View>
@@ -271,7 +283,7 @@ const styles = StyleSheet.create({
         zIndex: 2,
     },
 
-    circleLarge: {
+    circuloMaior: {
         position: 'absolute',
         width: 180,
         height: 180,
@@ -281,7 +293,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#C8E5FF',
     },
 
-    circleSmall: {
+    circuloMenor: {
         position: 'absolute',
         width: 90,
         height: 90,
