@@ -90,7 +90,7 @@ export function CareEventCreateScreen({route,navigation,}: Props) {
 
         try {
             await createCareEvent.mutateAsync(data);
-            Alert.alert('Cuidado agendado!','O evento foi adicionado à jornada do seu pet.',[{text: 'OK', onPress: () => navigation.goBack()}]);
+            Alert.alert('Evento agendado!','O evento foi adicionado à sua agenda.',[{text: 'OK', onPress: () => navigation.goBack()}]);
         
         } catch (error) {
             const axiosError = error as AxiosError;
@@ -115,54 +115,83 @@ export function CareEventCreateScreen({route,navigation,}: Props) {
                         </TouchableOpacity>
 
                         <View style={styles.headerText}>
-                            <Text style={styles.titulo}>Registrar cuidado</Text>
-                            <Text style={styles.subtitulo}>Organize os próximos cuidados do seu pet.</Text>
+                            <Text style={styles.titulo}>Registrar evento</Text>
+                            <Text style={styles.subtitulo}>Organize os próximos eventos de cuidado.</Text>
                         </View>
                     </View>
 
-                    <View style={styles.infoCard}>
-                        <View style={styles.infoIcon}>
+                    <View style={styles.badgeCard}>
+                        <View style={styles.badgeIcon}>
                             <Ionicons name="calendar-outline" size={23} color="#2877E6"/>
                         </View>
 
-                        <View style={styles.infoConteudo}>
-                            <Text style={styles.infoTitulo}>Cuidar também é planejar</Text>
-                            <Text style={styles.infoText}>Registre vacinas, consultas, exames e mais.</Text>
+                        <View style={styles.badgeConteudo}>
+                            <Text style={styles.badgeTitulo}>Cuidar também é planejar</Text>
+                            <Text style={styles.badgeText}>Registre vacinas, consultas, exames e mais.</Text>
                         </View>
                     </View>
 
                     <CareEventTypeSelector value={typeEvent} onChange={setTypeEvent}/>
 
-                    <View style={styles.formSection}>
-                        <Text style={styles.label}>Descrição</Text>
+                    <View style={styles.eventoInfoCard}>
+                        <View style={styles.eventoInfoHeader}>
+                            <View style={styles.eventoInfoIcon}>
+                                <Ionicons name="create-outline" size={22} color="#2877E6" />
+                            </View>
 
-                        <Text style={styles.campoDescricao}>Dê um nome para este cuidado.</Text>
+                            <View style={styles.eventoInfo}>
+                                <Text style={styles.eventoInfoTitulo}>Descrição</Text>
+                                <Text style={styles.eventoDescricao}>Dê um nome para este evento.</Text>
+                            </View>
+                        </View>
 
-                        <View style={styles.inputContainer}>
-                            <Ionicons name="create-outline" size={19} color="#7890A2"/>
-                            <TextInput style={styles.input} value={description} onChangeText={setDescription} placeholder="Ex.: Vacina B12" placeholderTextColor="#9AAAB6" maxLength={100}/>
+                        <View style={styles.eventoInfoInputContainer}>
+                            <TextInput style={styles.eventoInfoInput} value={description} onChangeText={setDescription} placeholder="Ex.: Vacina B12" placeholderTextColor="#9AAAB6" maxLength={100} />
                         </View>
                     </View>
 
-                    <View style={styles.formSection}>
-                        <Text style={styles.label}>Data do cuidado</Text>
+                    <View style={styles.eventoInfoCard}>
+                        <View style={styles.eventoInfoHeader}>
+                            <View style={styles.eventoInfoIcon}>
+                                <Ionicons name="calendar-outline" size={22} color="#2877E6" />
+                            </View>
 
-                        <Text style={styles.campoDescricao}>Quando este cuidado está programado?</Text>
+                            <View style={styles.eventoInfo}>
+                                <Text style={styles.eventoInfoTitulo}>Data</Text>
+                                <Text style={styles.eventoDescricao}>Para quando este evento está agendado?</Text>
+                            </View>
+                        </View>
 
-                        <View style={styles.inputContainer}>
-                            <Ionicons name="calendar-outline" size={19} color="#7890A2"/>
-
-                            <TextInput style={styles.input} value={eventDate} onChangeText={(value) => setEventDate(formatDateInput(value))} placeholder="DD/MM/AAAA" placeholderTextColor="#9AAAB6" keyboardType="number-pad" maxLength={10}/>
+                        <View style={styles.eventoInfoInputContainer}>
+                            <TextInput style={styles.eventoInfoInput} value={eventDate} onChangeText={(value) => setEventDate(formatDateInput(value))} placeholder="DD/MM/AAAA" placeholderTextColor="#9AAAB6" keyboardType="number-pad" maxLength={10} />
                         </View>
                     </View>
+                    
 
-                    <View style={styles.formSection}>
-                        <Text style={styles.label}>Observações</Text>
+                    <View style={styles.eventoInfoCard}>
+                        <View style={styles.eventoInfoHeader}>
+                            <View style={styles.eventoInfoIcon}>
+                                <Ionicons name="document-text-outline" size={22} color="#2877E6" />
+                            </View>
 
-                        <Text style={styles.campoDescricao}>Opcional — acrescente alguma informação importante.</Text>
+                            <View style={styles.eventoInfo}>
+                                <Text style={styles.eventoInfoTitulo}>Observações</Text>
+                                <Text style={styles.eventoDescricao}>Opcional — acrescente alguma informação importante.</Text>
+                            </View>
+                        </View>
 
-                        <View style={styles.observacoesContainer}>
-                            <TextInput style={styles.observacoesInput} value={observations} onChangeText={setObservations} placeholder="Ex.: Levar a carteirinha de vacinação..." placeholderTextColor="#9AAAB6" multiline textAlignVertical="top" maxLength={250}/>
+                        <View style={styles.observacoesInputContainer}>
+                            <TextInput
+                                style={styles.observacoesInput}
+                                value={observations}
+                                onChangeText={setObservations}
+                                placeholder="Ex.: Levar a carteirinha de vacinação..."
+                                placeholderTextColor="#9AAAB6"
+                                multiline
+                                textAlignVertical="top"
+                                maxLength={250}
+                            />
+
                             <Text style={styles.limiteTamanho}>{observations.length}/250</Text>
                         </View>
                     </View>
@@ -181,7 +210,7 @@ export function CareEventCreateScreen({route,navigation,}: Props) {
                         ) : (
                             <>
                                 <Ionicons name="calendar-outline" size={20} color="#FFFFFF"/>
-                                <Text style={styles.enviarText}>Agendar cuidado</Text>
+                                <Text style={styles.enviarText}>Agendar evento</Text>
                             </>
                         )}
                     </TouchableOpacity>
@@ -240,7 +269,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
     },
 
-    infoCard: {
+    badgeCard: {
         flexDirection: 'row',
         padding: 16,
         borderRadius: 22,
@@ -248,7 +277,7 @@ const styles = StyleSheet.create({
         marginBottom: 27,
     },
 
-    infoIcon: {
+    badgeIcon: {
         width: 43,
         height: 43,
         alignItems: 'center',
@@ -257,65 +286,90 @@ const styles = StyleSheet.create({
         backgroundColor:'#FFFFFF',
     },
 
-    infoConteudo: {
+    badgeConteudo: {
         flex: 1,
         marginLeft: 12,
     },
 
-    infoTitulo: {
+    badgeTitulo: {
         color: '#174F79',
         fontSize: 13,
         fontWeight: '700',
         marginTop: 5
     },
 
-    infoText: {
+    badgeText: {
         marginTop: 4,
         color: '#557792',
         fontSize: 11,
         lineHeight: 16,
     },
 
-    formSection: {
-        marginTop: 22,
+    eventoInfoCard: {
+        padding: 16,
+        borderRadius: 22,
+        backgroundColor:'#FFFFFF',
+        borderWidth: 1,
+        borderColor: '#E5EEF5',
+        marginTop: 25
     },
 
-    label: {
+    eventoInfoHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    eventoInfoIcon: {
+        width: 43,
+        height: 43,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        backgroundColor:'#EAF4FF',
+    },
+
+    eventoInfo: {
+        flex: 1,
+        marginLeft: 11,
+    },
+
+    eventoInfoTitulo: {
         color: '#174F79',
         fontSize: 15,
         fontWeight: '700',
     },
 
-    campoDescricao: {
+    eventoDescricao: {
         marginTop: 3,
-        color: '#8194A3',
+        color: '#7890A2',
         fontSize: 11,
+        lineHeight: 15,
     },
 
-    inputContainer: {
-        minHeight: 52,
-        marginTop: 10,
+    eventoInfoInputContainer: {
+        minHeight: 49,
+        marginTop: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
         paddingHorizontal: 14,
-        borderRadius: 16,
-        backgroundColor:'#FFFFFF',
+        borderRadius: 14,
+        backgroundColor:'#F7FAFC',
         borderWidth: 1,
         borderColor: '#DFE9F0',
     },
 
-    input: {
+    eventoInfoInput: {
         flex: 1,
         color: '#315B79',
-        fontSize: 13,
+        fontSize: 14,
+        
     },
 
-    observacoesContainer: {
-        marginTop: 10,
-        padding: 14,
-        borderRadius: 16,
-        backgroundColor:'#FFFFFF',
+    observacoesInputContainer: {
+        marginTop: 15,
+        padding: 13,
+        borderRadius: 15,
+        backgroundColor: '#F7FAFC',
         borderWidth: 1,
         borderColor: '#DFE9F0',
     },
