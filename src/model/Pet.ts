@@ -1,5 +1,5 @@
 import { CareEvent } from "./CareEvent";
-import { MonitoringPet } from "./MonitoringPet";
+import { PetMonitoring } from "./PetMonitoring";
 
 type Sex = 'Fêmea' | 'Macho' | 'Desconhecido' ;
 
@@ -34,7 +34,7 @@ interface RegisterPetResponse {
     sex: string;
     age: number;
     birthDate: string;
-    petMonitorings: MonitoringPet[];
+    petMonitorings: PetMonitoring[];
     careEvents: CareEvent[];
 }
 

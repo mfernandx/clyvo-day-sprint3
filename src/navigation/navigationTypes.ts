@@ -18,6 +18,7 @@ export type TutorStackParamList = {
     PetsTutor: undefined;
     DailyPetLogCreate: {petId: number;};
     CommunityPostCreate: undefined;
+    PetMonitoringCreate: {petId: number;};
 };
 
 export type VeterinarianTabParamList = {

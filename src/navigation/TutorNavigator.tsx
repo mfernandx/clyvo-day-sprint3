@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PetsScreen } from '../screen/tutor/PetsScreen';
 import {DailyPetLogCreateScreen,} from '../screen/tutor/DailyPetLogCreateScreen';
 import { CommunityPostCreateScreen } from '../screen/community/CommunityPostCreateScreen';
+import { PetMonitoringCreateScreen } from '../screen/tutor/PetMonitoringCreateScreen';
 
 const Tab = createBottomTabNavigator<TutorTabParamList>();
 const Stack = createNativeStackNavigator<TutorStackParamList>();
@@ -86,6 +87,8 @@ export function TutorNavigator() {
             <Stack.Screen name="DailyPetLogCreate" component={DailyPetLogCreateScreen}/>
 
             <Stack.Screen name="CommunityPostCreate" component={CommunityPostCreateScreen}/>
+
+            <Stack.Screen name="PetMonitoringCreate" component={PetMonitoringCreateScreen}/>
         </Stack.Navigator>
     );
 }

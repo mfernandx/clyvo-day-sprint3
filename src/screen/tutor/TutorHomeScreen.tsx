@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
+import {Alert, SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -105,7 +105,14 @@ export function TutorHomeScreen() {
                         <Text style={styles.acaoDescricao}>Conte como foi o dia</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5}>
+                    <TouchableOpacity style={styles.acaoCard} activeOpacity={0.5} onPress={() => {
+                        if (!firstPet) {
+                            Alert.alert('Nenhum pet cadastrado','Cadastre um pet antes de fazer um monitoramento.');
+                            return;
+                        }
+                        navigation.navigate('PetMonitoringCreate',{petId: firstPet.petId},);
+                    }}>
+
                         <View style={[styles.acaoIcon,styles.acaoIconVerde]}>
                             <Ionicons name="pulse-outline" size={28} color="#3DA6A0"/>
                         </View>
