@@ -48,7 +48,8 @@ export function VeterinarianHomeScreen() {
             icon:'document-text-outline' as const,
             backgroundColor:'#EAF7F3',
             iconColor:'#3DA68D',
-            onPress: () => {Alert.alert('Em breve')},
+            onPress: () => navigation.navigate('Insights'),
+            
         },
         {
             label: 'Buscar paciente',
@@ -57,6 +58,7 @@ export function VeterinarianHomeScreen() {
             backgroundColor:'#FFF3DD',
             iconColor:'#D9912B',
             onPress: () => {Alert.alert('Em breve')},
+           
         },
     ];
 

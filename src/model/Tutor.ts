@@ -1,7 +1,14 @@
-import { User } from "./User";
+import { Achievement, User } from "./User";
 
 interface Tutor extends User {
+    userId: number;
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    typeUser: 'Tutor';
+    isActive: boolean;
     scoreEngagement: number;
+    achievement: Achievement;
 }
 
 interface RegisterTutorRequest {
@@ -24,5 +31,4 @@ interface RegisterTutorResponse {
     updatedAt: string | null;
 }
 
-
-export { Tutor, RegisterTutorRequest, RegisterTutorResponse };
+export { Tutor, RegisterTutorRequest, RegisterTutorResponse};

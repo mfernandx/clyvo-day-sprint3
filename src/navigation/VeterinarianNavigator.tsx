@@ -8,6 +8,7 @@ import {CommunityScreen} from '../screen/community/CommunityScreen';
 import {VeterinarianProfileScreen} from '../screen/veterinarian/VeterinarianProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CommunityPostCreateScreen } from '../screen/community/CommunityPostCreateScreen';
+import { VeterinarianInsightsScreen } from '../screen/veterinarian/VeterinarianInsightsScreen';
 
 const Tab = createBottomTabNavigator<VeterinarianTabParamList>();
 const Stack = createNativeStackNavigator<VeterinarianStackParamList>();
@@ -81,6 +82,10 @@ export function VeterinarianNavigator() {
             <Stack.Screen name="CommunityPostCreate" component={CommunityPostCreateScreen}/>
 
             <Stack.Screen name="Community" component={CommunityScreen}/>
+            
+            <Stack.Screen name="Patients" component={PatientsScreen}/>
+
+            <Stack.Screen name="Insights" component={VeterinarianInsightsScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }

@@ -34,6 +34,8 @@ export type VeterinarianStackParamList = {
     VeterinarianTabs: undefined;
     Community: undefined;
     CommunityPostCreate: undefined;
+    Patients: undefined;
+    Insights: undefined;
 };
 
 export type CommunityStackParamList = {

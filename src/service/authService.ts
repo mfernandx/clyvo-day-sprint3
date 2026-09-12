@@ -19,6 +19,7 @@ export const authService = {
             userId: authData.userId,
             fullName: authData.fullName,
             email: authData.email,
+            phoneNumber: authData.phoneNumber,
             typeUser: authData.typeUser,
         };
 

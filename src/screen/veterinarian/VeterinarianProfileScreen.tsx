@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
 import {ActivityIndicator,Alert,SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {useNavigation} from '@react-navigation/native';
-import {VeterinarianTabParamList} from '../../navigation/navigationTypes';
+import {VeterinarianStackParamList} from '../../navigation/navigationTypes';
 import {ProfileActionCard} from '../../components/ProfileActionCard';
 import {useAuth} from '../../context/AuthContext';
 import { VeterinarianUser } from '../../model/User';
-
-type NavigationProp = BottomTabNavigationProp<VeterinarianTabParamList>;
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export function VeterinarianProfileScreen() {
-    const navigation = useNavigation<NavigationProp>();
+
+    const navigation =useNavigation<NativeStackNavigationProp<VeterinarianStackParamList>>();
     const {user,signOut} = useAuth();
     const [isLoggingOut,setIsLoggingOut] = useState(false);
     const veterinarian = user?.typeUser === 'Veterinario' ? (user as VeterinarianUser) : null;
@@ -124,7 +123,7 @@ export function VeterinarianProfileScreen() {
                             icon="document-text-outline"
                             iconBackgroundColor="#FFF3DD"
                             iconColor="#D9912B"
-                            onPress={() => {Alert.alert('Insights')}}
+                            onPress={() => navigation.navigate('Insights')}
                         />
                     </View>
                 </View>
