@@ -6,12 +6,24 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TutorStackParamList } from '../../navigation/navigationTypes';
 import { useNavigation } from '@react-navigation/native';
 import { usePets } from '../../hooks/usePets';
+import { useMemo } from 'react';
+import { useCareEvents } from '../../hooks/useCareEvents';
+import { NextCareEventCard } from '../../components/NextCareEventCard';
+import { useDailyPetLogs } from '../../hooks/useDailyPetLog';
+import { calculateCareStreak } from '../../utils/calc/calcCareStreak';
+import { CareStreakCard } from '../../components/CareStreakCard';
 
 export function TutorHomeScreen() {
     const navigation =useNavigation<NativeStackNavigationProp<TutorStackParamList>>();
     const { user } = useAuth();
     const {data: pets,isLoading: isLoadingPets,isError: isPetsError,} = usePets();
     const firstPet = pets?.[0];
+    const { data: dailyLogs = [], isLoading: isLoadingLogs } = useDailyPetLogs(firstPet?.petId);
+    const careStreak = calculateCareStreak(dailyLogs);
+    const { data: careEvents = [], isLoading: isLoadingCareEvents } = useCareEvents(firstPet?.petId);
+    const nextCareEvent = useMemo(() => {
+        return [...careEvents].filter(event => event.status === 0).sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())[0];
+    }, [careEvents]);
 
     function getFirstName() {
         if (!user?.fullName) {
@@ -31,15 +43,11 @@ export function TutorHomeScreen() {
                         
                     </View>
 
-                    <View style={styles.headerAcoes}>
-                        <TouchableOpacity style={styles.headerButton} activeOpacity={0.8}>
-                            <Ionicons name="search-outline" size={23}color="#2877E6"/>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.headerButton} activeOpacity={0.8}>
-                            <Ionicons name="notifications-outline" size={23} color="#2877E6"/>
-                        </TouchableOpacity>
-                    </View>
+                    
+                    <TouchableOpacity style={styles.headerButton} activeOpacity={0.8}>
+                        <Ionicons name="notifications-outline" size={23} color="#2877E6"/>
+                    </TouchableOpacity>
+                    
                 </View>
 
 
@@ -78,18 +86,7 @@ export function TutorHomeScreen() {
                     
                 </TouchableOpacity>
 
-                <View style={styles.sequenciaCard}>
-                    <View style={styles.sequenciaIcon}>
-                        <Ionicons name="flame-outline" size={31} color="#F18A4C"/>
-                    </View>
-
-                    <View style={styles.sequenciaConteudo}>
-                        <Text style={styles.sequenciaTitulo}>Sequência de cuidado</Text>
-                        <Text style={styles.sequenciaDescricao}>Sua sequência aparecerá aqui</Text>
-                    </View>
-
-                    <Ionicons name="sparkles-outline" size={24} color="#6BAAF0"/>
-                </View>
+                <CareStreakCard streak={careStreak} isLoading={isLoadingLogs}/>
 
                 <Text style={styles.sectionTitulo}>O que vamos registrar hoje?</Text>
 
@@ -160,16 +157,7 @@ export function TutorHomeScreen() {
                     <Text style={styles.sectionTitulo}>Próximos cuidados</Text>
                 </View>
 
-                <View style={styles.eventosCard}>
-                    <View style={styles.eventosIcon}>
-                        <Ionicons name="calendar-outline" size={31} color="#2877E6"/>
-                    </View>
-
-                    <View style={styles.eventosConteudo}>
-                        <Text style={styles.eventosTitulo}>Sua agenda de cuidados</Text>
-                        <Text style={styles.eventosText}>Eventos de cuidado aparecerão aqui.</Text>
-                    </View>
-                </View>
+                <NextCareEventCard event={nextCareEvent} isLoading={isLoadingCareEvents} />
 
                 
             </ScrollView>
@@ -214,14 +202,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
 
-    headerAcoes: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-
     headerButton: {
-        width: 44,
-        height: 44,
+        width: 54,
+        height: 54,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 15,
@@ -234,6 +217,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.08,
         shadowRadius: 8,
         elevation: 2,
+        marginRight: 5,
     },
 
     cardPrincipal: {
@@ -459,46 +443,6 @@ const styles = StyleSheet.create({
         color: '#7B91A4',
         fontSize: 11,
         lineHeight: 16,
-    },
-
-    eventosCard: {
-        minHeight: 120,
-        marginTop: 14,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 18,
-        paddingVertical: 18,
-        borderRadius: 24,
-        backgroundColor: '#FFFFFF',
-        borderWidth: 1,
-        borderColor: '#E4EFF7',
-    },
-
-    eventosIcon: {
-        width: 60,
-        height: 60,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20,
-        backgroundColor: '#EAF4FF',
-    },
-
-    eventosConteudo: {
-        flex: 1,
-        marginLeft: 16,
-    },
-
-    eventosTitulo: {
-        color: '#174F79',
-        fontSize: 16,
-        fontWeight: '700',
-    },
-
-    eventosText: {
-        marginTop: 5,
-        color: '#6C879C',
-        fontSize: 13,
-        lineHeight: 19,
     },
 
 });

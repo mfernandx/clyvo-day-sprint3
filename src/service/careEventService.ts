@@ -8,4 +8,11 @@ export const careEventService = {
         return response.data;
 
     },
+
+    async getByPet(petId: number): Promise<CareEvent[]> {
+
+        const response = await api.get<CareEvent[]>(`/api/CareEvent/pet/${petId}`);
+        return response.data;
+        
+    }
 };

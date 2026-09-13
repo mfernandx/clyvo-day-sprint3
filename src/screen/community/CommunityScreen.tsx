@@ -86,8 +86,8 @@ export function CommunityScreen({navigation}: Props) {
                         <Ionicons name="chatbubbles-outline" size={33} color="#65A8EA"/>
                     </View>
 
-                    <Text style={styles.estadoTitulo}>Seja o primeiro a compartilhar ♡</Text>
-                    <Text style={styles.estadoText}>A comunidade ainda não possui publicações. Uma experiência sua pode ser exatamente o que outra pessoa precisava encontrar.</Text>
+                    <Text style={styles.estadoTitulo}>Seja o primeiro a compartilhar</Text>
+                    <Text style={styles.estadoText}>A comunidade ainda não possui publicações.</Text>
 
                     <TouchableOpacity style={styles.emptyButton} activeOpacity={0.85} onPress={() => navigation.navigate('CommunityPostCreate')}>
                         <Text style={styles.emptyButtonText}>Criar publicação</Text>
