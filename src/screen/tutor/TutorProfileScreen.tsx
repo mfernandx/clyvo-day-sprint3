@@ -6,6 +6,11 @@ import {useNavigation} from '@react-navigation/native';
 import {TutorStackParamList} from '../../navigation/navigationTypes';
 import {ProfileActionCard} from '../../components/ProfileActionCard';
 import {useAuth} from '../../context/AuthContext';
+import { EditProfileFieldModal } from '../../components/EditProfileFieldModal';
+import { useUpdateEmail } from '../../hooks/useUpdateEmail';
+import { useUpdatePhone } from '../../hooks/useUpdatePhone';
+import { TutorUser } from '../../model/User';
+import { EditableProfileField } from '../../components/EditableProfileField';
 
 type NavigationProp = NativeStackNavigationProp<TutorStackParamList>;
 
@@ -14,6 +19,11 @@ export function TutorProfileScreen() {
     const navigation = useNavigation<NavigationProp>();
     const {user,signOut} = useAuth();
     const [isLoggingOut,setIsLoggingOut] = useState(false);
+    const tutor = user?.typeUser === 'Tutor' ? (user as TutorUser) : null;
+    const updateEmail = useUpdateEmail();
+    const updatePhone = useUpdatePhone();
+    const [emailModalVisible,setEmailModalVisible,] = useState(false);
+    const [phoneModalVisible,setPhoneModalVisible,] = useState(false);
 
     function getInitials(name?: string,) {
         if (!name) {
@@ -32,6 +42,35 @@ export function TutorProfileScreen() {
 
         return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }
+
+    async function handleUpdateEmail(email: string) {
+        if (!user) {
+            return;
+        }
+
+        await updateEmail.mutateAsync({
+            userId: user.userId,
+            email,
+        });
+
+        setEmailModalVisible(false);
+    }
+
+    async function handleUpdatePhone(phoneNumber: string) {
+        if (!user) {
+            return;
+        }
+
+        const formattedPhone =phoneNumber.replace(/\D/g,'',);
+
+        await updatePhone.mutateAsync({
+            userId: user.userId,
+            phoneNumber: formattedPhone,
+        });
+
+        setPhoneModalVisible(false);
+    }
+
 
     function handleLogout() {
         Alert.alert('Sair da conta','Deseja realmente sair do CLYVO DAY?',
@@ -120,47 +159,21 @@ export function TutorProfileScreen() {
                     <Text style={styles.sectionTitulo}>Minha conta</Text>
                     <Text style={styles.sectionSubtitulo}>Veja aqui suas informações pessoais.</Text>
 
-                    <View style={styles.contaCard}>
+                    <View style={styles.contaFields}>
 
-                        <View style={styles.contaRow}>
-                            <View style={styles.contaIcon}>
-                                <Ionicons name="mail-outline" size={19} color="#2877E6"/>
-                            </View>
+                        <EditableProfileField
+                            label="E-mail"
+                            value={user.email}
+                            icon="mail-outline"
+                            onEdit={() => setEmailModalVisible(true)}
+                        />
 
-                            <View style={styles.contaInfo}>
-                                <Text style={styles.contaLabel}>E-mail</Text>
-                                <Text style={styles.contaValue}>{user.email}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.divisor}/>
-
-                        <View style={styles.contaRow}>
-                            <View style={styles.contaIcon}>
-                                <Ionicons name="person-outline" size={19} color="#2877E6"/>
-                            </View>
-
-                            <View style={styles.contaInfo}>
-                                <Text style={styles.contaLabel}>Tipo de conta</Text>
-                                <Text style={styles.contaValue}>Tutor</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.divisor}/>
-
-                        <View style={styles.contaRow}>
-                            <View style={styles.contaIcon}>
-                                <Ionicons name="call-outline" size={19} color="#2877E6"/>
-                            </View>
-
-                            <View style={styles.contaInfo}>
-                                <Text style={styles.contaLabel}>Telefone</Text>
-                                <Text style={styles.contaValue}>{user.phoneNumber}</Text>
-                            </View>
-                        </View>
-
-
-
+                        <EditableProfileField
+                            label="Telefone"
+                            value={user.phoneNumber}
+                            icon="call-outline"
+                            onEdit={() => setPhoneModalVisible(true)}
+                        />
                     </View>
 
                 </View>
@@ -178,6 +191,28 @@ export function TutorProfileScreen() {
                 </TouchableOpacity>
 
             </ScrollView>
+            <EditProfileFieldModal
+                            visible={emailModalVisible}
+                            title="Alterar e-mail"
+                            description="Informe o novo e-mail da sua conta."
+                            value={user.email}
+                            placeholder="novo@email.com"
+                            loading={updateEmail.isPending}
+                            onClose={() => setEmailModalVisible(false)}
+                            onSave={handleUpdateEmail}
+                        />
+            
+                        <EditProfileFieldModal
+                            visible={phoneModalVisible}
+                            title="Alterar telefone"
+                            description="Informe o novo número de telefone."
+                            value={user.phoneNumber}
+                            placeholder="11999999999"
+                            maxLength={15}
+                            loading={updatePhone.isPending}
+                            onClose={() => setPhoneModalVisible(false)}
+                            onSave={handleUpdatePhone}
+                        />
         </SafeAreaView>
     );
 }
@@ -308,46 +343,9 @@ const styles = StyleSheet.create({
         gap: 11,
     },
 
-    contaCard: {
-        marginTop: 14,
-        paddingHorizontal: 17,
-        borderRadius: 22,
-        backgroundColor: '#FFFFFF',
-        borderWidth: 1,
-        borderColor: '#E5EEF5',
-    },
-
-    contaRow: {
-        minHeight: 72,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-
-    contaIcon: {
-        width: 39,
-        height: 39,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 13,
-        backgroundColor: '#EAF4FF',
-    },
-
-    contaInfo: {
-        flex: 1,
-        marginLeft: 12,
-    },
-
-    contaLabel: {
-        color: '#879BAA',
-        fontSize: 11,
-        fontWeight: '600',
-    },
-
-    contaValue: {
-        marginTop: 3,
-        color: '#315B79',
-        fontSize: 14,
-        fontWeight: '600',
+    contaFields: {
+        gap: 10,
+        marginTop: 15,
     },
 
     divisor: {
