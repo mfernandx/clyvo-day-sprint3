@@ -26,14 +26,7 @@ export function VeterinarianHomeScreen() {
     }
 
     const quickActions = [
-        {
-            label: 'Atendimentos',
-            description: 'Acesse sua agenda',
-            icon:'medical-outline' as const,
-            backgroundColor:'#EAF4FF',
-            iconColor:'#2877E6',
-            onPress: () => {Alert.alert('Em breve')},
-        },
+        
         {
             label: 'Publicar',
             description: 'Compartilhe no feed',
@@ -51,15 +44,7 @@ export function VeterinarianHomeScreen() {
             onPress: () => navigation.navigate('Insights'),
             
         },
-        {
-            label: 'Buscar paciente',
-            description: 'Busca rápida',
-            icon:'search-outline' as const,
-            backgroundColor:'#FFF3DD',
-            iconColor:'#D9912B',
-            onPress: () => {Alert.alert('Em breve')},
-           
-        },
+        
     ];
 
     return (

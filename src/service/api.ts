@@ -2,7 +2,7 @@ import axios from 'axios';
 import { sessionStorage } from '../security/sessionStorage';
 
 export const api = axios.create({
-    baseURL: 'http://192.168.15.11:10000',
+    baseURL: 'http://api-container-clyvoday.chilecentral.azurecontainer.io:8080',
     timeout: 10000,
 
     headers: {
