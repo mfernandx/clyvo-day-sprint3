@@ -69,6 +69,14 @@ O CLYVO DAY busca:
 
 ---
 
+# 🎥 Vídeo de demonstração
+
+Para visualizar o funcionamento do CLYVO DAY na prática, acesse o vídeo de demonstração do projeto:
+
+👉 [Assistir ao vídeo de demonstração](https://youtube.com/shorts/vrxzhxXuXZ0)
+
+---
+
 # 👥 Perfis de usuário
 
 ## 🐾 Tutor
